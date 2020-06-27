@@ -4,15 +4,20 @@ window.addEventListener('DOMContentLoaded', function() {
     /**
      * Инициализирует табы, включает показывание нужного контента по клику на таб
      * 
-     * @param {string} tabClass 
-     * @param {string} tabParentClass 
-     * @param {string} tabContentClass 
+     * @param {string} tabClass Класс таба 
+     * @param {string} tabParentClass Класс родителей таба
+     * @param {string} tabContentClass Класс контента таба
      */
     function tabsInitialize(tabClass, tabParentClass, tabContentClass) {
         let headerTab = document.querySelectorAll(`.${tabClass}`),
         header = document.querySelector(`.${tabParentClass}`),
         tabContent = document.querySelectorAll(`.${tabContentClass}`);
         
+        /**
+         * Прячем табы, начиная с переданного индекса таба
+         * 
+         * @param {number} tabIndex Индекс таба, начиная с которого надо прятать табы
+         */
         function hideTabContent(tabIndex) {
             for (let i = tabIndex; i < tabContent.length; i++) {
                 tabContent[i].classList.remove('show');
@@ -22,6 +27,11 @@ window.addEventListener('DOMContentLoaded', function() {
 
         hideTabContent(1);
 
+        /**
+         * Показываем таб
+         * 
+         * @param {number} tabIndex Индекс таба, который нужно показать 
+         */
         function showTabContent(tabIndex) {
             if (tabContent[tabIndex].classList.contains('hide')) {
                 tabContent[tabIndex].classList.remove('hide');
@@ -45,22 +55,13 @@ window.addEventListener('DOMContentLoaded', function() {
 
     tabsInitialize('info-header-tab', 'info-header', 'info-tabcontent');
 
-    let deadline = '2020-06-28';
 
-    function getTimeRemaining(endTime) {
-        let remainingTime = Date.parse(endTime) - Date.parse(new Date()),
-            seconds = Math.floor((remainingTime / 1000) % 60),
-            minutes = Math.floor((remainingTime / 1000 / 60) % 60),
-            hours = Math.floor((remainingTime / (1000 * 60 * 60)));
-
-        return {
-            'remainingTime': remainingTime,
-            'seconds': seconds,
-            'minutes': minutes,
-            'hours': hours
-        };
-    }
-
+    /**
+     * Устанавливаем таймер обратного отсчета
+     * 
+     * @param {string} id Id divа, в котором прописывается сам таймер
+     * @param {string} endTime дата окончания таймера, в формате ГГГГ-ММ-ДД 
+     */
     function setTimer(id, endTime) {
         let timer = document.getElementById(id),
             seconds = timer.querySelector('.seconds'),
@@ -68,6 +69,9 @@ window.addEventListener('DOMContentLoaded', function() {
             hours = timer.querySelector('.hours'),
             timeInterval = setInterval(updateTimer, 1000);
         
+        /**
+         * Обновляем значения таймера
+         */
         function updateTimer() {
             let remainingTime = getTimeRemaining(endTime);
             hours.textContent = remainingTime.hours;
@@ -78,7 +82,36 @@ window.addEventListener('DOMContentLoaded', function() {
                 clearInterval(timeInterval);
             }
         }
+
+        /**
+         * Вычисляем оставшееся время работы таймера
+         * 
+         * @param {string} endTime Дата, до которой надо запускать таймер
+         */
+        function getTimeRemaining(endTime) {
+            let remainingTime = Date.parse(endTime) - Date.parse(new Date()),
+                seconds = Math.floor((remainingTime / 1000) % 60),
+                minutes = Math.floor((remainingTime / 1000 / 60) % 60),
+                hours = Math.floor((remainingTime / (1000 * 60 * 60)));
+    
+            if (seconds < 10) {
+                seconds = `0${seconds}`;
+            }
+            if (minutes < 10) {
+                minutes = `0${minutes}`;
+            }
+            if (hours < 10) {
+                hours = `0${hours}`;
+            }
+    
+            return {
+                'remainingTime': remainingTime,
+                'seconds': seconds,
+                'minutes': minutes,
+                'hours': hours
+            };
+        }
     }
 
-    setTimer('timer', deadline);
+    setTimer('timer', '2020-06-28');
 });
