@@ -44,4 +44,41 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     tabsInitialize('info-header-tab', 'info-header', 'info-tabcontent');
+
+    let deadline = '2020-06-28';
+
+    function getTimeRemaining(endTime) {
+        let remainingTime = Date.parse(endTime) - Date.parse(new Date()),
+            seconds = Math.floor((remainingTime / 1000) % 60),
+            minutes = Math.floor((remainingTime / 1000 / 60) % 60),
+            hours = Math.floor((remainingTime / (1000 * 60 * 60)));
+
+        return {
+            'remainingTime': remainingTime,
+            'seconds': seconds,
+            'minutes': minutes,
+            'hours': hours
+        };
+    }
+
+    function setTimer(id, endTime) {
+        let timer = document.getElementById(id),
+            seconds = timer.querySelector('.seconds'),
+            minutes = timer.querySelector('.minutes'),
+            hours = timer.querySelector('.hours'),
+            timeInterval = setInterval(updateTimer, 1000);
+        
+        function updateTimer() {
+            let remainingTime = getTimeRemaining(endTime);
+            hours.textContent = remainingTime.hours;
+            minutes.textContent = remainingTime.minutes;
+            seconds.textContent = remainingTime.seconds;
+
+            if (remainingTime.remainingTime <= 0) {
+                clearInterval(timeInterval);
+            }
+        }
+    }
+
+    setTimer('timer', deadline);
 });
