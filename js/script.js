@@ -80,6 +80,9 @@ window.addEventListener('DOMContentLoaded', function() {
 
             if (remainingTime.remainingTime <= 0) {
                 clearInterval(timeInterval);
+                hours.textContent = '00';
+                minutes.textContent = '00';
+                seconds.textContent = '00';
             }
         }
 
@@ -114,4 +117,20 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     setTimer('timer', '2020-06-28');
+
+    let moreBtn = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        popUpClose = document.querySelector('.popup-close');
+
+    moreBtn.addEventListener('click', function() {
+        overlay.style.display = 'block';
+        this.classList.add('more-splash');
+        document.body.style.overflow = 'hidden';
+    });
+
+    popUpClose.addEventListener('click', function() {
+        overlay.style.display = 'none';
+        moreBtn.classList.remove('more-splash');
+        document.body.style.overflow = '';
+    });
 });
