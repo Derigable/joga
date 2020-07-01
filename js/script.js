@@ -133,4 +133,28 @@ window.addEventListener('DOMContentLoaded', function() {
         moreBtn.classList.remove('more-splash');
         document.body.style.overflow = '';
     });
+
+    let infoClass = document.querySelector('.info');
+
+    infoClass.addEventListener('click', function(event) {
+        if (event.target.classList.contains('description-btn') ) {
+            overlay.style.display = 'block';
+            this.classList.add('more-splash');
+            document.body.style.overflow = 'hidden';
+        }
+        
+    });
+
+
+    // Второе задание
+
+    // let age = document.getElementById('age');
+    
+    // function showUser(surname, name) {
+    //          alert("Пользователь " + surname + " " + name + ", его возраст " + this.value);
+    // }
+    
+    // showUser.apply(age, ["Горький","Максим"]);
+
+
 });
