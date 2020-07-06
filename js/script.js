@@ -18,7 +18,7 @@ window.addEventListener('DOMContentLoaded', function() {
          * 
          * @param {number} tabIndex Индекс таба, начиная с которого надо прятать табы
          */
-        function hideTabContent(tabIndex) {
+        function hideTabContent(tabIndex = 0) {
             for (let i = tabIndex; i < tabContent.length; i++) {
                 tabContent[i].classList.remove('show');
                 tabContent[i].classList.add('hide');
@@ -32,7 +32,7 @@ window.addEventListener('DOMContentLoaded', function() {
          * 
          * @param {number} tabIndex Индекс таба, который нужно показать 
          */
-        function showTabContent(tabIndex) {
+        function showTabContent(tabIndex = 0) {
             if (tabContent[tabIndex].classList.contains('hide')) {
                 tabContent[tabIndex].classList.remove('hide');
                 tabContent[tabIndex].classList.add('show');
@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', function() {
         /**
          * Вычисляем оставшееся время работы таймера
          * 
-         * @param {string} endTime Дата, до которой надо запускать таймер
+         * @param {string} endTime Дата, до которой надо запускать таймер,  в формате ГГГГ-ММ-ДД
          */
         function getTimeRemaining(endTime) {
             let remainingTime = Date.parse(endTime) - Date.parse(new Date()),
@@ -144,17 +144,4 @@ window.addEventListener('DOMContentLoaded', function() {
         }
         
     });
-
-
-    // Второе задание
-
-    // let age = document.getElementById('age');
-    
-    // function showUser(surname, name) {
-    //          alert("Пользователь " + surname + " " + name + ", его возраст " + this.value);
-    // }
-    
-    // showUser.apply(age, ["Горький","Максим"]);
-
-
 });
