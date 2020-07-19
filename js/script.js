@@ -182,4 +182,39 @@ window.addEventListener('DOMContentLoaded', function() {
             input[i].value = '';
         }
     });
+
+    // форма контакты 
+    let formContacts = document.getElementById('form'),
+        inputContacts = formContacts.getElementsByTagName('input'),
+        statusMessageContacts = document.createElement('div');
+
+    statusMessageContacts.classList.add('status');
+
+    formContacts.addEventListener('submit', function(event) {
+        event.preventDefault();
+        formContacts.appendChild(statusMessageContacts);
+
+        let request = new XMLHttpRequest();
+        request.open('POST', 'server.php');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        let formContactsData = new FormData(formContacts);
+        request.send(formContactsData);
+
+        request.addEventListener('readystatechange', function() {
+            if (request.readyState < 4) {
+                statusMessageContacts.innerHTML = message.loading;
+            } else if (request.readyState === 4 && request.status == 200) {
+                statusMessageContacts.innerHTML = message.success;
+            } else {
+                statusMessageContacts.innerHTML = message.failure;
+            }
+        })
+
+
+        for (let i = 0; i < inputContacts.length; i++) {
+            inputContacts[i].value = '';
+        }
+    });
+
 });
