@@ -161,26 +161,39 @@ window.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         form.appendChild(statusMessage);
 
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
         let formData = new FormData(form);
-        request.send(formData);
 
-        request.addEventListener('readystatechange', function() {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            } else if (request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = message.success; 
-            } else {
-                statusMessage.innerHTML = message.failure;
+        function postData(data) {
+            return new Promise(function(resolve, reject) {
+
+                let request = new XMLHttpRequest();
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                request.onreadystatechange = function() {
+                    if (request.readyState < 4) {
+                        resolve();
+                    } else if (request.readyState === 4 && request.status == 200) {
+                        resolve(); 
+                    } else {
+                        reject();
+                    }
+                };
+                request.send(formData);
+            });          
+        }  
+
+        function clearInput() {
+            for (let i = 0; i < input.length; i++) {
+                input[i].value = '';
             }
-        });
-
-        for (let i = 0; i < input.length; i++) {
-            input[i].value = '';
         }
+
+        postData(formData)
+            .then(()=> statusMessage.innerHTML = message.loading)
+            .then(()=> statusMessage.innerHTML = message.success)
+            .catch(()=> statusMessage.innerHTML = message.failure)
+            .then(clearInput);
     });
 
     // форма контакты 
@@ -194,27 +207,39 @@ window.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         formContacts.appendChild(statusMessageContacts);
 
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
         let formContactsData = new FormData(formContacts);
-        request.send(formContactsData);
+        
+        function postData(data) {
+            return new Promise(function(resolve, reject) {
 
-        request.addEventListener('readystatechange', function() {
-            if (request.readyState < 4) {
-                statusMessageContacts.innerHTML = message.loading;
-            } else if (request.readyState === 4 && request.status == 200) {
-                statusMessageContacts.innerHTML = message.success;
-            } else {
-                statusMessageContacts.innerHTML = message.failure;
+                let request = new XMLHttpRequest();
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                request.onreadystatechange = function() {
+                    if (request.readyState < 4) {
+                        resolve();
+                    } else if (request.readyState === 4 && request.status == 200) {
+                        resolve(); 
+                    } else {
+                        reject();
+                    }
+                };
+                request.send(formContactsData);
+            });   
+        }   
+
+            function clearInput() {
+                for (let i = 0; i < inputContacts.length; i++) {
+                    inputContacts[i].value = '';
+                }
             }
-        })
 
-
-        for (let i = 0; i < inputContacts.length; i++) {
-            inputContacts[i].value = '';
-        }
+        postData(formContactsData)
+            .then(()=> statusMessageContacts.innerHTML = message.loading)
+            .then(()=> statusMessageContacts.innerHTML = message.success)
+            .catch(()=> statusMessageContacts.innerHTML = message.failure)
+            .then(clearInput);
+        
     });
-
 });
