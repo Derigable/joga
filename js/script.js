@@ -246,52 +246,104 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // Слайдер
 
-    let slideIndex = 1,
+    addSlider();
+
+    function addSlider() {
+        let slideIndex = 1,
         slides = document.querySelectorAll('.slider-item'),
         prev = document.querySelector('.prev'),
         next = document.querySelector('.next'),
         dotsWrap = document.querySelector('.slider-dots'),
         dots = document.querySelectorAll('.dot');
 
-    showSlides(slideIndex);
+        showSlides(slideIndex);
 
-    function showSlides(number) {
+        function showSlides(number) {
 
-        if (number > slides.length) {
-            slideIndex = 1;
-        } else if (number < 1) {
-            slideIndex = slides.length;
+            if (number > slides.length) {
+                slideIndex = 1;
+            } else if (number < 1) {
+                slideIndex = slides.length;
+            }
+
+            slides.forEach((item) => item.style.display = 'none');
+            dots.forEach((item) => item.classList.remove('dot-active'));
+
+            slides[slideIndex - 1].style.display = 'block';
+            dots[slideIndex - 1].classList.add('dot-active');
+        };
+
+        function plusSlide(number) {
+            showSlides(slideIndex += number);
+        };
+
+        function currentSlide(number) {
+            showSlides(slideIndex = number);
         }
 
-        slides.forEach((item) => item.style.display = 'none');
-        dots.forEach((item) => item.classList.remove('dot-active'));
+        prev.addEventListener('click', function() {
+            plusSlide(-1);
+        });
 
-        slides[slideIndex - 1].style.display = 'block';
-        dots[slideIndex - 1].classList.add('dot-active');
-    };
+        next.addEventListener('click', function() {
+            plusSlide(1);
+        });
 
-    function plusSlide(number) {
-        showSlides(slideIndex += number);
-    };
-
-    function currentSlide(number) {
-        showSlides(slideIndex = number);
+        dotsWrap.addEventListener('click', function(event) {
+            for (let i = 0; i < dots.length + 1; i++) {
+                if (event.target.classList.contains('dot') && event.target == dots[i-1]) {
+                    currentSlide(i);
+                }
+            }
+        });
     }
 
-    prev.addEventListener('click', function() {
-        plusSlide(-1);
-    });
+    
+    // Калькулятор 
 
-    next.addEventListener('click', function() {
-        plusSlide(1);
-    });
+    addCalculator();
 
-    dotsWrap.addEventListener('click', function(event) {
-        for (let i = 0; i < dots.length + 1; i++) {
-            if (event.target.classList.contains('dot') && event.target == dots[i-1]) {
-                currentSlide(i);
+    function addCalculator() {
+        let totalField = document.getElementById('total'),
+        peopleCountField = document.querySelectorAll('.counter-block-input')[0],
+        daysCountField = document.querySelectorAll('.counter-block-input')[1],
+        peopleCount = '',
+        daysCount = '',
+        total = '',
+        placeModificator = 1,
+        selectOptions = document.getElementById('select');
+
+        totalField.innerHTML = 0;
+
+        peopleCountField.addEventListener('change', function() {
+            peopleCount = +this.value;
+            total = (peopleCount + daysCount) * 4000 * placeModificator;
+
+            if (daysCountField.value !== '' && peopleCount !== 0) {
+                totalField.innerHTML = total;
+            } else totalField.innerHTML = 0;       
+        });
+
+        daysCountField.addEventListener('change', function() {
+            daysCount = +this.value;
+            total = (peopleCount + daysCount) * 4000 * placeModificator;
+
+            if (peopleCountField.value !== '' && daysCount !== 0) {
+                totalField.innerHTML = total;
+            } else totalField.innerHTML = 0;        
+        });
+
+        selectOptions.addEventListener('change', function() {
+            if (daysCountField.value == '' || peopleCountField.value == '') {
+                totalField.innerHTML = 0;
+            } else {
+                placeModificator = +this.options[this.selectedIndex].value;
+                totalField.innerHTML = (peopleCount + daysCount) * 4000 * placeModificator;
             }
-        }
-    });
+        });
+    } 
 
 });
+
+
+
