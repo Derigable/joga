@@ -13,6 +13,8 @@ window.addEventListener('DOMContentLoaded', function() {
         header = document.querySelector(`.${tabParentClass}`),
         tabContent = document.querySelectorAll(`.${tabContentClass}`);
         
+        console.log('test');
+        
         /**
          * Прячем табы, начиная с переданного индекса таба
          * 
